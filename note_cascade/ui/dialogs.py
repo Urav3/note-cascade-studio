@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from PySide6.QtCore import Qt, QUrl
-from PySide6.QtGui import QDesktopServices
+from PySide6.QtGui import QDesktopServices, QGuiApplication
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -24,7 +24,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from note_cascade import APP_NAME, __version__
+from note_cascade import APP_NAME, ISSUES_URL, REPO_URL, VERSION_LABEL
 from note_cascade.app import paths
 from note_cascade.app.config import AppConfig
 from note_cascade.ui.widgets.common import hbox, muted_label, text_button
@@ -229,11 +229,37 @@ class DiagnosticsDialog(QDialog):
         self.b_pitch.clicked.connect(self.open_pitch_trace)
         b_logs = text_button("Abrir registros", "folder")
         b_logs.clicked.connect(lambda: QDesktopServices.openUrl(QUrl.fromLocalFile(str(paths.logs_dir()))))
+        self.b_report = text_button("Informar de un problema…", "link")
+        self.b_report.setToolTip("Copia este diagnóstico (sin el nombre de tu carpeta de usuario) y abre la "
+                                 "página de GitHub para contar el problema. No se envía nada automáticamente.")
+        self.b_report.setEnabled(False)
+        self.b_report.clicked.connect(self.report_problem)
         b_close = text_button("Cerrar")
         b_close.clicked.connect(self.accept)
-        lay.addLayout(hbox(b_run, self.b_models, b_clean, self.b_pitch, b_logs, None, b_close))
+        lay.addLayout(hbox(b_run, self.b_models, b_clean, self.b_pitch, b_logs, None, self.b_report, b_close))
+        self.report = None
         self.task = None
         self.run()
+
+    def report_problem(self) -> None:
+        if self.report is None:
+            return
+        QGuiApplication.clipboard().setText(self.report.text(anonymous=True))
+        ans = QMessageBox.information(
+            self, "Informar de un problema",
+            "El diagnóstico se copió al portapapeles, sin el nombre de tu carpeta de usuario.\n\n"
+            "Se abrirá GitHub en el navegador (necesitas una cuenta gratuita). Elige «Informar de un error», "
+            "cuenta qué pasó y pega el diagnóstico con Ctrl+V.\n\n"
+            "Adjunta la partitura solo si es tuya o de dominio público; si no, basta una captura del compás "
+            "que falla.", QMessageBox.Ok | QMessageBox.Cancel)
+        if ans == QMessageBox.Ok:
+            QDesktopServices.openUrl(QUrl(ISSUES_URL))
+
+    def _show_report(self, rep) -> None:
+        self.report = rep
+        self.b_report.setEnabled(True)
+        self.text.setPlainText(rep.text())
+        self.c.refresh_engines()
 
     def open_pitch_trace(self) -> None:
         from note_cascade.ui.widgets.pitch_trace_dialog import PitchTraceDialog
@@ -250,7 +276,7 @@ class DiagnosticsDialog(QDialog):
             return run_diagnostics(cfg)
 
         self.task = Task(work, self)
-        self.task.signals.finished.connect(lambda rep: (self.text.setPlainText(rep.text()), self.c.refresh_engines()))
+        self.task.signals.finished.connect(self._show_report)
         self.task.signals.failed.connect(lambda m, d: self.text.setPlainText(m + "\n\n" + d))
         self.task.start()
 
@@ -300,9 +326,14 @@ class AboutDialog(QDialog):
         lay = QVBoxLayout(self)
         browser = QTextBrowser()
         browser.setOpenExternalLinks(True)
-        text = f"<h2>{APP_NAME} {__version__}</h2>"
+        text = f"<h2>{APP_NAME} {VERSION_LABEL}</h2>"
         text += ("<p>Conversor local de partituras a MIDI con revisión asistida y visualizador en cascada. "
                  "Licencia: <b>GNU AGPL v3 o posterior</b>.</p>")
+        text += (f"<p><b>Código fuente y versiones nuevas:</b> <a href='{REPO_URL}'>{REPO_URL}</a><br>"
+                 f"<b>Informar de un problema o proponer una mejora:</b> <a href='{ISSUES_URL}'>abrir en GitHub</a> "
+                 "(en <i>Diagnóstico → Informar de un problema</i> se copia antes el diagnóstico).<br>"
+                 "Una copia del código de esta versión está también en <code>codigo_fuente.zip</code>, junto al "
+                 "programa.</p>")
         lic = paths.install_root() / "LICENCIAS_TERCEROS.md"
         if lic.exists():
             body = lic.read_text(encoding="utf-8")

@@ -7,7 +7,7 @@ import html
 from collections import Counter
 from pathlib import Path
 
-from note_cascade import APP_NAME, __version__
+from note_cascade import APP_NAME, VERSION_LABEL
 from note_cascade.layout.text_classifier import CATEGORY_LABELS
 from note_cascade.music_model import pitch as P
 from note_cascade.music_validation.issues import CATEGORY_LABEL, EVIDENCE_LABEL, SEVERITY_LABEL
@@ -40,7 +40,7 @@ def write_report(project: Project, path: Path, perf, cfg) -> Path:
     open_issues = [i for i in issues if i.status == "abierta"]
     counts = Counter(i.severity for i in open_issues)
     rows = []
-    rows.append(f"<h1>Informe de reconocimiento</h1><p class='muted'>{_e(APP_NAME)} {__version__} · "
+    rows.append(f"<h1>Informe de reconocimiento</h1><p class='muted'>{_e(APP_NAME)} {_e(VERSION_LABEL)} · "
                 f"{dt.datetime.now():%d/%m/%Y %H:%M}</p>")
     rows.append("<div class='cards'>")
     for label, value in (("Título", s.title or "—"), ("Compases", len(s.measures)), ("Notas", len(notes)),

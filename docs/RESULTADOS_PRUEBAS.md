@@ -5,7 +5,9 @@ Audiveris 5.11.0, HOMR 0.7.0. Fecha: 24/10/2026. Todo lo que aparece aquí se ej
 
 ## 1. Pruebas del programa (`test_windows.bat`, `pytest -m "not omr"`)
 
-**151 pruebas superadas, 0 fallidas** (≈ 15–50 s según la carga del equipo).
+**153 pruebas superadas, 0 fallidas** (≈ 15–50 s según la carga del equipo). Con el repositorio recién
+descargado de GitHub (sin `test_samples/`, `fotos/` ni `tools/`) pasan las mismas 153; de las 19 con motores
+reales, 6 pasan y 13 se saltan solas por falta de Audiveris o de las partituras.
 
 | Área | Qué se comprueba |
 |---|---|
@@ -26,7 +28,7 @@ Audiveris 5.11.0, HOMR 0.7.0. Fecha: 24/10/2026. Todo lo que aparece aquí se ej
 | Aprendizaje y reglas generales | Corrección del usuario propuesta en los compases que el motor leyó igual; preferencias aprendidas entre partituras (3 aceptaciones, un rechazo la desactiva, aplicar ≠ deshacer); puntillo perdido; 3/8 escondido en 12/8; figura demasiado larga detectada por su espaciado |
 | Reparaciones entre motores | El segundo motor completa notas de un acorde que el principal perdió; no se mezcla si contradice una nota del principal; acorde ligado conserva ♮/♭ tras la barra (y sin ligadura se respeta la armadura); silencio de compás completo en 12/8; melodía sobre acorde largo separada en otra voz; cada nota de un unísono conserva su mano |
 | Octavas y tempo del texto | «8va» medida en la imagen y aplicada en varios sistemas, y deshecha por su corrección; sin medida solo se propone; no se aplica dos veces si el motor ya la tuvo; el tempo se coloca en el sistema asignado por el clasificador |
-| Interfaz | Los cinco pasos; edición desde el rollo de piano con deshacer/rehacer y añadir nota; aceptar una corrección propuesta; el panel «Nota» dice por qué una nota está marcada y abre su aviso, varias notas sin valores sobrantes, arpegiar un acorde y deshacerlo; visualizador en cascada; ventana «Ver partitura» resalta las notas que suenan; Ctrl+V de captura con transparencia |
+| Interfaz | Los cinco pasos; edición desde el rollo de piano con deshacer/rehacer y añadir nota; aceptar una corrección propuesta; el panel «Nota» dice por qué una nota está marcada y abre su aviso, varias notas sin valores sobrantes, arpegiar un acorde y deshacerlo; visualizador en cascada; ventana «Ver partitura» resalta las notas que suenan; Ctrl+V de captura con transparencia; «Licencias y ayuda» enlaza al código fuente y a los avisos; «Informar de un problema» copia el diagnóstico sin la carpeta de usuario y solo abre GitHub si se acepta |
 
 ## 2. Pruebas con motores reales (`pytest -m omr`)
 

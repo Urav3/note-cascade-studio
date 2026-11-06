@@ -1,6 +1,7 @@
 # Estado del proyecto
 
-Última actualización: 24/10/2026 · versión 1.0.0
+Última actualización: 05/11/2026 · versión 1.0.0 beta 1 (primera versión publicada en
+https://github.com/Urav3/note-cascade-studio; los fallos y las ideas nuevas se apuntan allí, en *Issues*)
 
 ## Hecho
 

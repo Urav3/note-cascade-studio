@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Lo que ya se sabe que falla
+    url: https://github.com/Urav3/note-cascade-studio/blob/main/LIMITACIONES.md
+    about: Qué reconoce bien, qué no y cómo se corrige.
+  - name: Manual completo
+    url: https://github.com/Urav3/note-cascade-studio/blob/main/README_ES.md
+    about: Instalación, los cinco pasos, revisión, escucha y exportación.

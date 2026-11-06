@@ -148,3 +148,20 @@ def test_synth_stems_and_silent_player():
     assert abs(eng.position() - 3.0) < 0.05
     eng.set_loop(1.0, 2.0)
     eng.close()
+
+
+def test_diagnostic_text_can_hide_the_user_folder():
+    """El diagnóstico para pegar en un aviso público no lleva el nombre de Windows del usuario."""
+    from pathlib import Path
+    from note_cascade.app.diagnostics import without_user_folder
+    home = Path(r"C:\Users\Ana")
+    text = (r"Python: 3.12 (C:\Users\Ana\Descargas\NCS\NoteCascadeStudio.exe)" "\n"
+            r"Audiveris: c:/users/ana/AppData/tools" "\n"
+            r"Otro usuario: C:\Users\Anabel\x" "\n"
+            r"Final: C:\Users\Ana")
+    out = without_user_folder(text, home)
+    assert r"%USERPROFILE%\Descargas\NCS" in out
+    assert "%USERPROFILE%/AppData/tools" in out
+    assert r"C:\Users\Anabel\x" in out                # otra carpeta que empieza igual no se toca
+    assert out.endswith("Final: %USERPROFILE%")
+    assert without_user_folder(text, Path("C:\\")) == text

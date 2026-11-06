@@ -1,0 +1,65 @@
+name: Informar de un error
+description: Algo no funciona, el programa se cierra o una partitura se convierte mal.
+title: "[Error] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por avisar: cuanta más información, antes se arregla.
+        Antes de escribir, mira si ya está en [LIMITACIONES.md](https://github.com/Urav3/note-cascade-studio/blob/main/LIMITACIONES.md).
+
+        **Partituras:** adjúntala solo si es tuya o de dominio público. Si tiene derechos de autor,
+        basta una captura del compás que falla.
+  - type: textarea
+    id: que-paso
+    attributes:
+      label: ¿Qué pasó?
+      description: Qué esperabas y qué hizo el programa (por ejemplo, «el compás 12 suena una octava más grave»).
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para repetirlo
+      placeholder: |
+        1. Abrí un PDF de 2 páginas
+        2. Pulsé «Analizar» con las opciones por defecto
+        3. En «Revisar», el compás 12…
+  - type: dropdown
+    id: paso
+    attributes:
+      label: ¿En qué paso ocurre?
+      options:
+        - 1 Importar
+        - 2 Analizar
+        - 3 Revisar
+        - 4 Escuchar / cascada
+        - 5 Exportar
+        - Instalación o arranque
+        - Otro
+  - type: textarea
+    id: diagnostico
+    attributes:
+      label: Diagnóstico
+      description: >
+        En el programa, «Diagnóstico → Informar de un problema…» lo copia sin el nombre de tu carpeta de
+        usuario. Pégalo aquí con Ctrl+V.
+      render: text
+  - type: input
+    id: windows
+    attributes:
+      label: Versión de Windows
+      placeholder: Windows 11 24H2
+  - type: textarea
+    id: archivos
+    attributes:
+      label: Capturas o archivos
+      description: Arrastra aquí capturas, el MIDI exportado o el informe .html.
+  - type: checkboxes
+    id: derechos
+    attributes:
+      label: Partitura
+      options:
+        - label: Si adjunto una partitura, es mía o de dominio público (si no, solo adjunto una captura del fragmento).
+          required: true

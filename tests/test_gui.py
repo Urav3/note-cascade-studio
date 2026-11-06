@@ -45,6 +45,39 @@ def _project():
     return p
 
 
+def test_about_and_report_problem_point_to_the_repository(window, qapp_offscreen, monkeypatch):
+    """«Licencias y ayuda» enlaza al código fuente (AGPL) y «Informar de un problema» copia el diagnóstico sin
+    la carpeta de usuario y abre la página de avisos solo si se acepta."""
+    from PySide6.QtGui import QDesktopServices, QGuiApplication
+    from PySide6.QtWidgets import QMessageBox, QTextBrowser
+    from note_cascade import ISSUES_URL, REPO_URL, VERSION_LABEL
+    from note_cascade.app.diagnostics import Check, DiagnosticReport
+    from note_cascade.ui import dialogs
+    w, c = window
+    about = dialogs.AboutDialog(w)
+    html = about.findChild(QTextBrowser).toHtml()
+    assert REPO_URL in html and ISSUES_URL in html and VERSION_LABEL in html
+    about.close()
+
+    monkeypatch.setattr(dialogs.DiagnosticsDialog, "run", lambda self: None)
+    opened = []
+    monkeypatch.setattr(QDesktopServices, "openUrl", staticmethod(lambda url: opened.append(url.toString())))
+    dlg = dialogs.DiagnosticsDialog(c, w)
+    assert not dlg.b_report.isEnabled()                     # hasta que termina el diagnóstico
+    from pathlib import Path
+    rep = DiagnosticReport([Check("Python", True, f"3.12 ({Path.home() / 'app' / 'python.exe'})")])
+    dlg._show_report(rep)
+    assert dlg.b_report.isEnabled()
+    for answer, expected in ((QMessageBox.Cancel, []), (QMessageBox.Ok, [ISSUES_URL])):
+        monkeypatch.setattr(QMessageBox, "information", staticmethod(lambda *a, **k: answer))
+        opened.clear()
+        dlg.report_problem()
+        copied = QGuiApplication.clipboard().text()
+        assert "%USERPROFILE%" in copied and str(Path.home()) not in copied
+        assert opened == expected
+    dlg.close()
+
+
 def test_steps_and_pages(window, qapp_offscreen):
     w, c = window
     assert not w.step_buttons["review"].isEnabled()

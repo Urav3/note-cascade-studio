@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "note-cascade-studio"
-version = "1.0.0"
+version = "1.0.0b1"
 description = "Conversor local de partituras (PDF, fotos, capturas) a MIDI con revisión y visualizador en cascada"
 readme = "README_ES.md"
 requires-python = ">=3.11,<3.13"

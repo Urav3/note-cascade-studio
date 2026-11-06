@@ -1,0 +1,22 @@
+name: Proponer una mejora
+description: Una idea para que el programa reconozca mejor, sea más fácil de usar o haga algo nuevo.
+title: "[Mejora] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: ¿Qué te gustaría?
+      description: Descríbelo con tus palabras; no hace falta saber de programación.
+    validations:
+      required: true
+  - type: textarea
+    id: para-que
+    attributes:
+      label: ¿Para qué lo usarías?
+      description: Qué intentabas hacer y qué te lo impidió o lo hizo pesado.
+  - type: textarea
+    id: ejemplo
+    attributes:
+      label: Ejemplo
+      description: Una captura o el compás donde lo echaste en falta (solo partituras tuyas o de dominio público).

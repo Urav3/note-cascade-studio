@@ -5,11 +5,13 @@ from __future__ import annotations
 import importlib
 import importlib.metadata
 import platform
+import re
 import shutil
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 
-from note_cascade import APP_NAME, __version__
+from note_cascade import APP_NAME, VERSION_LABEL
 from note_cascade.app import paths
 from note_cascade.app.config import AppConfig
 
@@ -31,8 +33,14 @@ class DiagnosticReport:
     def ok(self) -> bool:
         return all(c.ok for c in self.checks if c.required)
 
-    def text(self) -> str:
-        lines = [f"{APP_NAME} {__version__} — diagnóstico", "=" * 60]
+    def text(self, anonymous: bool = False) -> str:
+        """Texto del diagnóstico. Con ``anonymous`` la carpeta del usuario (que incluye su nombre de
+        Windows) se sustituye por %USERPROFILE%, para pegarlo en un informe público."""
+        text = self._text()
+        return without_user_folder(text) if anonymous else text
+
+    def _text(self) -> str:
+        lines = [f"{APP_NAME} {VERSION_LABEL} — diagnóstico", "=" * 60]
         for c in self.checks:
             mark = "OK " if c.ok else ("FALTA" if c.required else "opcional")
             lines.append(f"[{mark:>8}] {c.name}: {c.detail}")
@@ -42,6 +50,17 @@ class DiagnosticReport:
         lines.append("Resultado: " + ("todo lo esencial está disponible." if self.ok else
                                       "faltan componentes esenciales (ver arriba)."))
         return "\n".join(lines)
+
+
+def without_user_folder(text: str, home: Path | None = None) -> str:
+    """Sustituye la carpeta personal (con barras de cualquier tipo, sin distinguir mayúsculas) por
+    %USERPROFILE%."""
+    home_s = str(home or Path.home()).rstrip("\\/")
+    if len(home_s) < 4:                      # «C:\» o vacío: no hay nada personal que ocultar
+        return text
+    parts = [re.escape(p) for p in re.split(r"[\\/]+", home_s) if p]
+    pattern = r"[\\/]+".join(parts) + r"(?=[\\/]|\b|$)"
+    return re.sub(pattern, "%USERPROFILE%", text, flags=re.IGNORECASE)
 
 
 def _pkg(name: str, module: str, required: bool, purpose: str) -> Check:

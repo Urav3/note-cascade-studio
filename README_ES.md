@@ -217,6 +217,12 @@ Registros: `%LOCALAPPDATA%\NoteCascadeStudio\registros`. Para obtener un informe
 archivo (`diagnostico.txt`), ejecuta **`diagnostico_windows.bat`**. La configuración se guarda en
 `%LOCALAPPDATA%\NoteCascadeStudio\configuracion.json` (ejemplo comentado en `config\configuracion_ejemplo.json`).
 
+**Informar de un problema:** *Diagnóstico → Informar de un problema…* copia el diagnóstico al portapapeles
+(sustituye tu carpeta de usuario por `%USERPROFILE%`, para que no aparezca tu nombre de Windows) y abre la
+página de avisos del proyecto en GitHub (https://github.com/Urav3/note-cascade-studio/issues), donde lo pegas
+con Ctrl+V. No se envía nada automáticamente. Adjunta la partitura solo si es tuya o de dominio público; si no,
+basta una captura del compás que falla.
+
 Lee también **`LIMITACIONES.md`** (qué notación se admite y qué no) y **`LICENCIAS_TERCEROS.md`**.
 La lista completa de símbolos que reconoce el programa, su efecto y el orden en que lee una partitura está en
 **`docs/Simbolos_y_orden_de_lectura.pdf`** (se regenera con `python scripts/make_symbols_pdf.py`).
