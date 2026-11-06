@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "note-cascade-studio"
+version = "1.0.0"
+description = "Conversor local de partituras (PDF, fotos, capturas) a MIDI con revisión y visualizador en cascada"
+readme = "README_ES.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "AGPL-3.0-or-later" }
+authors = [{ name = "Note Cascade Studio" }]
+dependencies = [
+    "PySide6-Essentials>=6.8",
+    "numpy>=2.0",
+    "opencv-python-headless>=4.10",
+    "Pillow>=11",
+    "PyMuPDF>=1.25",
+    "mido>=1.3",
+    "sounddevice>=0.5",
+    "rapidocr>=3.0",
+    "onnxruntime>=1.20",
+    "homr==0.7.0",
+]
+
+[project.optional-dependencies]
+midi-out = ["python-rtmidi>=1.5"]
+video = ["imageio-ffmpeg>=0.5"]
+dev = ["pytest>=8", "pytest-qt>=4.4", "music21>=9.1", "verovio>=4.3", "pyinstaller>=6.10"]
+
+[project.scripts]
+note-cascade = "note_cascade.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["note_cascade*"]
+
+[tool.setuptools.package-data]
+note_cascade = ["resources/*", "resources/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "omr: pruebas que ejecutan motores OMR reales (lentas)",
+    "gui: pruebas de interfaz gráfica",
+]
+addopts = "-m 'not omr'"
+filterwarnings = ["ignore::SyntaxWarning", "ignore::DeprecationWarning"]

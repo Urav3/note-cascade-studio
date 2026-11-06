@@ -1,0 +1,26 @@
+# Entorno y herramientas descargadas por install_windows.bat
+.venv/
+tools/
+build/
+dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/_salida_precision/
+diagnostico.txt
+*.ncsproj
+
+# Partituras y fotos de prueba: tienen derechos de autor de terceros (o son personales).
+# Las pruebas que las usan se saltan solas si no están.
+test_samples/
+fotos/
+
+# Resultados exportados y archivos del sistema
+*.mid
+*.midi
+*.musicxml
+*.mxl
+*_informe.html
+*.mp4
+Thumbs.db
+desktop.ini

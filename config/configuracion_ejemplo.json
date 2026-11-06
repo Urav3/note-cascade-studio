@@ -1,0 +1,65 @@
+{
+  "processing": {
+    "dpi": "auto",
+    "image_correction": "auto",
+    "engine": "auto",
+    "cross_check": "auto",
+    "detect_text": true,
+    "chord_symbols_to_notes": false,
+    "piano_two_hands": true,
+    "engine_timeout_per_page": 300
+  },
+  "music": {
+    "default_tempo_bpm": 100.0,
+    "repeats": "expandir",
+    "dynamics_to_velocity": true,
+    "sustain_pedal": true,
+    "fermata_stretch": true,
+    "articulation_effects": true,
+    "range_low": 21,
+    "range_high": 108
+  },
+  "playback": {
+    "backend": "internal",
+    "timbre": "piano",
+    "volume": 0.8,
+    "lookahead_s": 2.5
+  },
+  "export": {
+    "midi_type1": true,
+    "midi_type0": false,
+    "musicxml": true,
+    "report": true,
+    "project": true,
+    "video": false,
+    "output_dir": "",
+    "auto_export_batch": true,
+    "open_folder_after": false
+  },
+  "engines": {
+    "audiveris_path": "",
+    "homr_python": "",
+    "oemer_command": "",
+    "tessdata_dir": ""
+  },
+  "ui": {
+    "theme": "oscuro",
+    "recent_files": [],
+    "show_advanced": false
+  },
+  "_ayuda": {
+    "ubicacion": "La aplicación guarda su configuración en %LOCALAPPDATA%\\NoteCascadeStudio\\configuracion.json. Este archivo es un ejemplo con los valores por defecto; se puede copiar allí y editar.",
+    "processing.dpi": "auto | 200 | 300 | 400 | 600",
+    "processing.image_correction": "auto | ninguna | suave | fuerte",
+    "processing.engine": "auto | audiveris | homr | oemer",
+    "processing.cross_check": "auto (solo si hace falta) | siempre | nunca",
+    "processing.engine_timeout_per_page": "segundos máximos por página para un motor",
+    "music.repeats": "expandir | no_expandir",
+    "music.range_low / range_high": "rango MIDI considerado válido (21 = La0, 108 = Do8)",
+    "playback.backend": "internal (sintetizador interno) | windows_midi",
+    "playback.timbre": "piano | piano_suave | electrico | organo",
+    "export.output_dir": "vacío = Documentos\\Note Cascade Studio",
+    "engines.*": "vacío = detección automática",
+    "ui.theme": "oscuro | claro"
+  }
+}
